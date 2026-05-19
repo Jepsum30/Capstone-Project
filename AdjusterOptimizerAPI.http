@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 @AdjusterOptimizerAPI_HostAddress = http://localhost:5196
 
 GET {{AdjusterOptimizerAPI_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+=======
+@AdjusterOptimizerAPI_HostAddress = http://localhost:5196
+
+GET {{AdjusterOptimizerAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+>>>>>>> 2d51366dff75f4a5b7b2f24f384ab1b63bde301e
