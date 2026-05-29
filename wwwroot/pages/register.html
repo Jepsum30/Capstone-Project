@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Adjuster Workload Optimizer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .card { max-width: 450px; margin: auto; margin-top: 60px; border-radius: 12px; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="card shadow p-4">
+    <h3 class="text-center mb-3">Create Account</h3>
+
+    <div id="message"></div>
+
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input id="username" class="form-control" type="text">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input id="email" class="form-control" type="email">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input id="password" class="form-control" type="password">
+        <small class="text-muted">
+            Must include uppercase, lowercase, number, and symbol.
+        </small>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Role</label>
+        <select id="role" class="form-select">
+            <option value="Adjuster">Adjuster</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Admin">Admin</option>
+        </select>
+    </div>
+
+    <button class="btn btn-primary w-100" onclick="register()">Register</button>
+</div>
+
+<script>
+async function register() {
+    const user = {
+        username: document.getElementById("username").value,
+        email: document.getElementById("email").value,
+        passwordHash: document.getElementById("password").value,
+        role: document.getElementById("role").value
+    };
+
+    const response = await fetch("/api/users/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user)
+    });
+
+    const msg = document.getElementById("message");
+
+    if (response.ok) {
+        msg.innerHTML = `<p class="text-success">Registration successful!</p>`;
+    } else {
+        msg.innerHTML = `<p class="error">Registration failed.</p>`;
+    }
+}
+</script>
+
+</body>
+</html>
