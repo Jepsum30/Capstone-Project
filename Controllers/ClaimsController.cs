@@ -108,7 +108,6 @@ namespace AdjusterOptimizerAPI.Controllers
             var results = await _context.Claims
                 .Where(c =>
                     EF.Functions.Like(c.ClaimType, $"%{query}%") ||
-                    EF.Functions.Like(c.Description, $"%{query}%") ||
                     EF.Functions.Like(c.Status, $"%{query}%") ||
                     EF.Functions.Like(c.Jurisdiction, $"%{query}%"))
                 .ToListAsync();

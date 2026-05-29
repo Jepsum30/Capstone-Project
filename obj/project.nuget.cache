@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "EaJWXPTtdmw=",
+  "dgSpecHash": "6Tg40BErsVo=",
   "success": true,
   "projectFilePath": "C:\\Users\\17576\\OneDrive - ECPI University\\ECPI master file\\SDC480 SD capstone\\AdjusterOptimizer\\AdjusterOptimizerAPI\\AdjusterOptimizerAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\17576\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",
     "C:\\Users\\17576\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.8\\microsoft.aspnetcore.openapi.10.0.8.nupkg.sha512",
     "C:\\Users\\17576\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.0\\microsoft.entityframeworkcore.9.0.0.nupkg.sha512",
     "C:\\Users\\17576\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.0\\microsoft.entityframeworkcore.abstractions.9.0.0.nupkg.sha512",

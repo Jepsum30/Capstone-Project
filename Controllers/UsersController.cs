@@ -5,10 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdjusterOptimizerAPI.Controllers
 {
-    /// <summary>
-    /// Handles all user-related operations including registration,
-    /// password changes, and standard CRUD operations.
-    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -20,20 +16,12 @@ namespace AdjusterOptimizerAPI.Controllers
             _context = context;
         }
 
-        // ------------------------------------------------------------
-        // GET: api/Users
-        // Returns all users in the system.
-        // ------------------------------------------------------------
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _context.Users.ToListAsync());
         }
 
-        // ------------------------------------------------------------
-        // GET: api/Users/{id}
-        // Returns a single user by ID.
-        // ------------------------------------------------------------
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -43,23 +31,15 @@ namespace AdjusterOptimizerAPI.Controllers
             return Ok(user);
         }
 
-        // ------------------------------------------------------------
-        // POST: api/Users/register
-        // Registers a new user with password complexity validation
-        // and secure password hashing.
-        // ------------------------------------------------------------
         [HttpPost("register")]
         public async Task<IActionResult> Register(User model)
         {
-            // Validate password complexity
-            if (!User.ValidatePassword(model.PasswordHash))
+            if (!ValidatePassword(model.PasswordHash))
             {
                 return BadRequest("Password must be at least 8 characters, include upper/lowercase letters, a number, and a symbol.");
             }
 
-            // Hash password before saving
-            string hashed = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
-            model.PasswordHash = hashed;
+            model.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
 
             _context.Users.Add(model);
             await _context.SaveChangesAsync();
@@ -67,33 +47,23 @@ namespace AdjusterOptimizerAPI.Controllers
             return Ok(new { message = "User registered successfully.", model.UserId });
         }
 
-        // ------------------------------------------------------------
-        // PUT: api/Users/change-password/{id}
-        // Allows a user to change their password with validation.
-        // ------------------------------------------------------------
         [HttpPut("change-password/{id}")]
         public async Task<IActionResult> ChangePassword(int id, [FromBody] string newPassword)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null) return NotFound("User not found.");
 
-            // Validate new password
-            if (!User.ValidatePassword(newPassword))
+            if (!ValidatePassword(newPassword))
             {
                 return BadRequest("Password must be at least 8 characters, include upper/lowercase letters, a number, and a symbol.");
             }
 
-            // Hash and update
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
             await _context.SaveChangesAsync();
 
             return Ok("Password updated successfully.");
         }
 
-        // ------------------------------------------------------------
-        // POST: api/Users
-        // Standard create (not used for registration).
-        // ------------------------------------------------------------
         [HttpPost]
         public async Task<IActionResult> Create(User model)
         {
@@ -103,10 +73,6 @@ namespace AdjusterOptimizerAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = model.UserId }, model);
         }
 
-        // ------------------------------------------------------------
-        // PUT: api/Users/{id}
-        // Updates user fields (not password).
-        // ------------------------------------------------------------
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, User model)
         {
@@ -119,10 +85,6 @@ namespace AdjusterOptimizerAPI.Controllers
             return NoContent();
         }
 
-        // ------------------------------------------------------------
-        // DELETE: api/Users/{id}
-        // Deletes a user from the system.
-        // ------------------------------------------------------------
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -133,6 +95,19 @@ namespace AdjusterOptimizerAPI.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        private bool ValidatePassword(string password)
+        {
+            if (string.IsNullOrEmpty(password) || password.Length < 8)
+                return false;
+
+            bool hasUpper = password.Any(char.IsUpper);
+            bool hasLower = password.Any(char.IsLower);
+            bool hasDigit = password.Any(char.IsDigit);
+            bool hasSymbol = password.Any(c => !char.IsLetterOrDigit(c));
+
+            return hasUpper && hasLower && hasDigit && hasSymbol;
         }
     }
 }
