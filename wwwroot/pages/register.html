@@ -1,38 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Register - Adjuster Workload Optimizer</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
     <style>
-        body { background-color: #f8f9fa; }
-        .card { max-width: 450px; margin: auto; margin-top: 60px; border-radius: 12px; }
-        .error { color: red; font-weight: bold; }
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            max-width: 450px;
+            margin: auto;
+            margin-top: 60px;
+            border-radius: 12px;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
 
+<!-- ========================================================= -->
+<!-- REGISTRATION FORM CARD -->
+<!-- ========================================================= -->
 <div class="card shadow p-4">
-    <h3 class="text-center mb-3">Create Account</h3>
 
+    <h3 class="text-center mb-3">Create an Account</h3>
+
+    <p class="text-muted text-center">
+        Password must include uppercase, lowercase, number, and symbol.
+    </p>
+
+    <!-- SUCCESS / ERROR MESSAGE AREA -->
     <div id="message"></div>
 
+    <!-- Registration Form -->
     <div class="mb-3">
         <label class="form-label">Username</label>
-        <input id="username" class="form-control" type="text">
+        <input id="username" class="form-control" placeholder="Enter username" />
     </div>
 
     <div class="mb-3">
         <label class="form-label">Email</label>
-        <input id="email" class="form-control" type="email">
+        <input id="email" type="email" class="form-control" placeholder="Enter email" />
     </div>
 
     <div class="mb-3">
         <label class="form-label">Password</label>
-        <input id="password" class="form-control" type="password">
-        <small class="text-muted">
-            Must include uppercase, lowercase, number, and symbol.
-        </small>
+        <input id="password" type="password" class="form-control" placeholder="Enter password" />
     </div>
 
     <div class="mb-3">
@@ -44,32 +68,71 @@
         </select>
     </div>
 
-    <button class="btn btn-primary w-100" onclick="register()">Register</button>
+    <!-- Register Button -->
+    <button class="btn btn-primary w-100" onclick="registerUser()">
+        Register
+    </button>
+
+    <!-- Back to Dashboard -->
+    <button class="btn btn-secondary w-100 mt-2"
+            onclick="location.href='dashboard.html'">
+        Back to Dashboard
+    </button>
 </div>
 
+<!-- ========================================================= -->
+<!-- REGISTRATION SCRIPT -->
+<!-- ========================================================= -->
 <script>
-async function register() {
-    const user = {
-        username: document.getElementById("username").value,
-        email: document.getElementById("email").value,
-        passwordHash: document.getElementById("password").value,
-        role: document.getElementById("role").value
-    };
+    /**
+     * Sends registration data to the API.
+     * Displays success or error messages on the page.
+     */
+    async function registerUser() {
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const role = document.getElementById("role").value;
 
-    const response = await fetch("/api/users/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user)
-    });
+        const messageDiv = document.getElementById("message");
 
-    const msg = document.getElementById("message");
+        // Basic client-side validation
+        if (!username || !email || !password) {
+            messageDiv.innerHTML = "<p class='error'>All fields are required.</p>";
+            return;
+        }
 
-    if (response.ok) {
-        msg.innerHTML = `<p class="text-success">Registration successful!</p>`;
-    } else {
-        msg.innerHTML = `<p class="error">Registration failed.</p>`;
+        // Build request body
+        const body = {
+            username: username,
+            email: email,
+            role: role,
+            passwordHash: password // API will hash it
+        };
+
+        try {
+            const response = await fetch("/api/Users/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                messageDiv.innerHTML = `<p class='error'>${result}</p>`;
+                return;
+            }
+
+            // Success message
+            messageDiv.innerHTML =
+                `<p class='text-success fw-bold'>Account created successfully!</p>`;
+
+        } catch (error) {
+            messageDiv.innerHTML =
+                "<p class='error'>Unable to connect to server.</p>";
+        }
     }
-}
 </script>
 
 </body>

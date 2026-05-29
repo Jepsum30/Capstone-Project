@@ -54,3 +54,8 @@ C:\Users\17576\OneDrive - ECPI University\ECPI master file\SDC480 SD capstone\Ad
 C:\Users\17576\OneDrive - ECPI University\ECPI master file\SDC480 SD capstone\AdjusterOptimizer\AdjusterOptimizerAPI\obj\Debug\net10.0\AdjusterOptimizerAPI.pdb
 C:\Users\17576\OneDrive - ECPI University\ECPI master file\SDC480 SD capstone\AdjusterOptimizer\AdjusterOptimizerAPI\obj\Debug\net10.0\AdjusterOptimizerAPI.genruntimeconfig.cache
 C:\Users\17576\OneDrive - ECPI University\ECPI master file\SDC480 SD capstone\AdjusterOptimizer\AdjusterOptimizerAPI\obj\Debug\net10.0\ref\AdjusterOptimizerAPI.dll
+C:\Users\17576\OneDrive - ECPI University\ECPI master file\SDC480 SD capstone\AdjusterOptimizer\AdjusterOptimizerAPI\obj\Debug\net10.0\compressed\7zv07sxecu-{0}-umv8hws34r-umv8hws34r.gz
+C:\Users\17576\OneDrive - ECPI University\ECPI master file\SDC480 SD capstone\AdjusterOptimizer\AdjusterOptimizerAPI\obj\Debug\net10.0\compressed\feuvvinh3q-{0}-vyg4mls27v-vyg4mls27v.gz
+C:\Users\17576\OneDrive - ECPI University\ECPI master file\SDC480 SD capstone\AdjusterOptimizer\AdjusterOptimizerAPI\obj\Debug\net10.0\compressed\njrqr1nofw-{0}-que2rgaz0d-que2rgaz0d.gz
+C:\Users\17576\OneDrive - ECPI University\ECPI master file\SDC480 SD capstone\AdjusterOptimizer\AdjusterOptimizerAPI\obj\Debug\net10.0\compressed\4z9mif99xe-{0}-v43u60tc65-v43u60tc65.gz
+C:\Users\17576\OneDrive - ECPI University\ECPI master file\SDC480 SD capstone\AdjusterOptimizer\AdjusterOptimizerAPI\obj\Debug\net10.0\compressed\1e6xaeqgg1-{0}-qnrufzveve-qnrufzveve.gz

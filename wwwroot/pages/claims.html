@@ -1,54 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
     <title>Claims - Adjuster Workload Optimizer</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border-radius: 10px;
+        }
+
+        table {
+            background: white;
+        }
+    </style>
 </head>
 
 <body>
 
+<!-- ========================================================= -->
 <!-- NAVIGATION BACK BUTTON -->
+<!-- ========================================================= -->
 <nav class="navbar navbar-dark bg-dark p-2">
     <a href="dashboard.html" class="btn btn-outline-light">Back to Dashboard</a>
 </nav>
 
+<!-- ========================================================= -->
 <!-- CLAIMS PAGE CONTENT -->
+<!-- ========================================================= -->
 <div class="container mt-4">
 
     <!-- Page Title -->
     <h2>Claims Management</h2>
 
     <!-- Purpose Statement -->
-    <p>This page displays all incoming claims and allows assignment to adjusters.</p>
+    <p class="text-muted">
+        This page displays all incoming claims and will later allow assignment
+        to adjusters once backend integration is complete.
+    </p>
 
-    <!-- CLAIMS TABLE -->
-    <!-- This is a placeholder table for Week 1 -->
-    <!-- Later this will be populated from your database -->
-    <table class="table table-bordered mt-3">
-        <thead class="table-dark">
-            <tr>
-                <th>Claim ID</th>
-                <th>Type</th>
-                <th>Jurisdiction</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+    <!-- ========================================================= -->
+    <!-- CLAIMS TABLE (Week 2 Placeholder) -->
+    <!-- ========================================================= -->
+    <div class="card p-3 shadow-sm mt-3">
+        <h4 class="mb-3">Incoming Claims</h4>
 
-        <tbody>
-            <tr>
+        <!-- Placeholder table for Week 2 -->
+        <!-- Later this will be populated dynamically from your API -->
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Claim ID</th>
+                    <th>Type</th>
+                    <th>Jurisdiction</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
                 <!-- Sample Data Row -->
-                <td>1001</td>
-                <td>Auto</td>
-                <td>VA</td>
+                <tr>
+                    <td>1001</td>
+                    <td>Auto</td>
+                    <td>VA</td>
+                    <td>New</td>
 
-                <!-- Assign Button -->
-                <!-- Later this will open an assignment modal -->
-                <td><button class="btn btn-primary btn-sm">Assign</button></td>
-            </tr>
-        </tbody>
-    </table>
+                    <!-- Assign Button -->
+                    <!-- Later this will open an assignment modal -->
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            Assign
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>1002</td>
+                    <td>Property</td>
+                    <td>NC</td>
+                    <td>New</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm">
+                            Assign
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="text-muted">
+            *Real claim data will appear here once API integration is added in Week 3.*
+        </p>
+    </div>
 </div>
 
 </body>

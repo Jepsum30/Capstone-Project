@@ -1,69 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Search Claims - Adjuster Workload Optimizer</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8" />
+    <title>Claim Search</title>
+
     <style>
-        body { background-color: #f8f9fa; }
-        .card { max-width: 700px; margin: auto; margin-top: 60px; border-radius: 12px; }
-        .results-table { margin-top: 25px; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        h2 {
+            margin-bottom: 5px;
+        }
+
+        #searchBox {
+            width: 300px;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 8px 14px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        #results {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f4f4f4;
+            border-radius: 6px;
+            white-space: pre-wrap;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
 
-<div class="card shadow p-4">
-    <h3 class="text-center mb-3">Search Claims</h3>
-    <p class="text-muted text-center">Use wildcards (e.g., *123*) to broaden your search.</p>
+    <h2>Claim Search</h2>
+    <p>
+        Enter any keyword to search claims.  
+        Wildcards are automatically supported (e.g., typing <b>auto</b> will match <i>automobile</i>, <i>auto‑theft</i>, etc.).
+    </p>
 
-    <!-- SEARCH INPUT -->
-    <div class="mb-3">
-        <label class="form-label">Search Term</label>
-        <input id="searchInput" type="text" class="form-control" placeholder="Enter claim number, type, or keyword">
-    </div>
+    <!-- Search Input -->
+    <input id="searchBox" type="text" placeholder="Search claims..." />
+    <button onclick="runSearch()">Search</button>
 
-    <button class="btn btn-primary w-100" onclick="performSearch()">Search</button>
+    <!-- Results Container -->
+    <div id="results"></div>
 
-    <!-- RESULTS -->
-    <div id="results" class="results-table"></div>
-</div>
+    <script>
+        /**
+         * Executes a wildcard-enabled search against the Claims API.
+         * Displays formatted JSON results or an error message.
+         */
+        async function runSearch() {
+            const query = document.getElementById("searchBox").value.trim();
+            const resultsDiv = document.getElementById("results");
 
-<script>
-async function performSearch() {
-    const term = document.getElementById("searchInput").value.trim();
-    if (!term) return;
+            if (!query) {
+                resultsDiv.innerHTML = "<span class='error'>Please enter a search term.</span>";
+                return;
+            }
 
-    const response = await fetch(`/api/claims/search/${term}`);
-    const data = await response.json();
+            try {
+                const response = await fetch(`/api/Claims/search?query=${encodeURIComponent(query)}`);
 
-    let html = `
-        <table class="table table-bordered table-striped mt-4">
-            <thead>
-                <tr>
-                    <th>Claim ID</th>
-                    <th>Claim Number</th>
-                    <th>Type</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
+                if (!response.ok) {
+                    resultsDiv.innerHTML = "<span class='error'>Search failed. Please try again.</span>";
+                    return;
+                }
 
-    data.forEach(c => {
-        html += `
-            <tr>
-                <td>${c.claimId}</td>
-                <td>${c.claimNumber}</td>
-                <td>${c.claimType}</td>
-                <td>${c.status}</td>
-            </tr>
-        `;
-    });
+                const data = await response.json();
 
-    html += "</tbody></table>";
-    document.getElementById("results").innerHTML = html;
-}
-</script>
+                // Display formatted JSON
+                resultsDiv.innerHTML = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+
+            } catch (error) {
+                resultsDiv.innerHTML = "<span class='error'>Unable to connect to server.</span>";
+            }
+        }
+    </script>
 
 </body>
 </html>

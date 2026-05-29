@@ -20,7 +20,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseStaticFiles();   // <-- REQUIRED to serve HTML files
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
