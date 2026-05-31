@@ -13,8 +13,8 @@ namespace AdjusterOptimizerAPI.Models
         /// Primary key for the Users table.
         /// Maps to USER_ID in MySQL.
         /// </summary>
-        [Column("USER_ID")]   // Maps C# property → MySQL column
-        public int UserId { get; set; }
+       [Column("USER_ID")]
+       public int UserId { get; set;}
 
         /// <summary>
         /// Username used for authentication.

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdjusterOptimizerAPI.Models
 {
@@ -11,6 +12,7 @@ namespace AdjusterOptimizerAPI.Models
         /// <summary>
         /// Primary key for the Adjusters table.
         /// </summary>
+        [Column("ADJUSTER_ID")]
         public int AdjusterId { get; set; }
 
         /// <summary>
@@ -26,6 +28,7 @@ namespace AdjusterOptimizerAPI.Models
         /// <summary>
         /// Skill level rating (1–10).
         /// </summary>
+        [Column("SKILL_LEVEL")]
         public int SkillLevel { get; set; }
 
         /// <summary>
@@ -46,21 +49,23 @@ namespace AdjusterOptimizerAPI.Models
         /// <summary>
         /// Performance score (0.0–100.0).
         /// </summary>
+        [Column("PERFORMANCE_SCORE")]
         public decimal PerformanceScore { get; set; }
 
         /// <summary>
         /// Number of years the adjuster has been with the company.
         /// </summary>
+        [Column("TENURE_YEARS")]
         public int TenureYears { get; set; }
 
         /// <summary>
         /// Navigation property for all assignments linked to this adjuster.
         /// </summary>
-        public required ICollection<Assignment> Assignments { get; set; }
+        public required List<Assignment> Assignments { get; set; } = [];
 
         /// <summary>
         /// Navigation property for performance history records.
         /// </summary>
-        public required ICollection<PerformanceHistory> PerformanceHistory { get; set; }
+        public required List<PerformanceHistory> PerformanceHistory { get; set; } = [];
     }
 }

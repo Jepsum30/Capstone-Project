@@ -5,10 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdjusterOptimizerAPI.Controllers
 {
-    /// <summary>
-    /// Handles all operations related to performance history records,
-    /// including CRUD actions and future analytics integration.
-    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class PerformanceHistoryController : ControllerBase
@@ -20,25 +16,24 @@ namespace AdjusterOptimizerAPI.Controllers
             _context = context;
         }
 
-        // ------------------------------------------------------------
-        // GET: api/PerformanceHistory
-        // Returns all performance history records.
-        // ------------------------------------------------------------
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var records = await _context.PerformanceHistory.ToListAsync();
+            var records = await _context.PerformanceHistory
+                .Include(p => p.Adjuster)
+                .Include(p => p.Claim)
+                .ToListAsync();
+
             return Ok(records);
         }
 
-        // ------------------------------------------------------------
-        // GET: api/PerformanceHistory/{id}
-        // Returns a single performance record by ID.
-        // ------------------------------------------------------------
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var record = await _context.PerformanceHistory.FindAsync(id);
+            var record = await _context.PerformanceHistory
+                .Include(p => p.Adjuster)
+                .Include(p => p.Claim)
+                .FirstOrDefaultAsync(p => p.RecordId == id);
 
             if (record == null)
                 return NotFound("Performance record not found.");
@@ -46,10 +41,6 @@ namespace AdjusterOptimizerAPI.Controllers
             return Ok(record);
         }
 
-        // ------------------------------------------------------------
-        // POST: api/PerformanceHistory
-        // Creates a new performance history record.
-        // ------------------------------------------------------------
         [HttpPost]
         public async Task<IActionResult> Create(PerformanceHistory model)
         {
@@ -60,10 +51,6 @@ namespace AdjusterOptimizerAPI.Controllers
                 new { id = model.RecordId }, model);
         }
 
-        // ------------------------------------------------------------
-        // PUT: api/PerformanceHistory/{id}
-        // Updates an existing performance history record.
-        // ------------------------------------------------------------
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, PerformanceHistory model)
         {
@@ -76,10 +63,6 @@ namespace AdjusterOptimizerAPI.Controllers
             return NoContent();
         }
 
-        // ------------------------------------------------------------
-        // DELETE: api/PerformanceHistory/{id}
-        // Deletes a performance history record.
-        // ------------------------------------------------------------
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

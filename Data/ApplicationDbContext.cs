@@ -29,47 +29,44 @@ namespace AdjusterOptimizerAPI.Data
         // Model Configuration
         // ------------------------------------------------------------
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            // -------------------------
-            // Primary Keys
-            // -------------------------
-            modelBuilder.Entity<Adjuster>().HasKey(a => a.AdjusterId);
-            modelBuilder.Entity<Claim>().HasKey(c => c.ClaimId);
-            modelBuilder.Entity<PerformanceHistory>().HasKey(p => p.RecordId);
-            modelBuilder.Entity<Assignment>().HasKey(a => a.AssignmentId);
-            modelBuilder.Entity<User>().HasKey(u => u.UserId);
+{
+    base.OnModelCreating(modelBuilder);
 
-            // -------------------------
-            // PerformanceHistory → Adjuster (many-to-one)
-            // -------------------------
-            modelBuilder.Entity<PerformanceHistory>()
-                .HasOne(p => p.Adjuster)
-                .WithMany(a => a.PerformanceHistory)
-                .HasForeignKey(p => p.AdjusterId);
+    // Primary Keys
+    modelBuilder.Entity<Adjuster>().HasKey(a => a.AdjusterId);
+    modelBuilder.Entity<Claim>().HasKey(c => c.ClaimId);
+    modelBuilder.Entity<PerformanceHistory>().HasKey(p => p.RecordId);
+    modelBuilder.Entity<Assignment>().HasKey(a => a.AssignmentId);
+    modelBuilder.Entity<User>().HasKey(u => u.UserId);
 
-            // -------------------------
-            // PerformanceHistory → Claim (many-to-one)
-            // -------------------------
-            modelBuilder.Entity<PerformanceHistory>()
-                .HasOne(p => p.Claim)
-                .WithMany(c => c.PerformanceHistory)
-                .HasForeignKey(p => p.ClaimId);
+    // PerformanceHistory → Adjuster
+    modelBuilder.Entity<PerformanceHistory>()
+        .HasOne(p => p.Adjuster)
+        .WithMany(a => a.PerformanceHistory)
+        .HasForeignKey(p => p.AdjusterId)
+        .OnDelete(DeleteBehavior.Restrict);
 
-            // -------------------------
-            // Assignment → Adjuster (many-to-one)
-            // -------------------------
-            modelBuilder.Entity<Assignment>()
-                .HasOne(a => a.Adjuster)
-                .WithMany(ad => ad.Assignments)
-                .HasForeignKey(a => a.AdjusterId);
+    // PerformanceHistory → Claim
+    modelBuilder.Entity<PerformanceHistory>()
+        .HasOne(p => p.Claim)
+        .WithMany(c => c.PerformanceHistory)
+        .HasForeignKey(p => p.ClaimId)
+        .OnDelete(DeleteBehavior.Restrict);
 
-            // -------------------------
-            // Assignment → Claim (many-to-one)
-            // -------------------------
-            modelBuilder.Entity<Assignment>()
-                .HasOne(a => a.Claim)
-                .WithMany(c => c.Assignments)
-                .HasForeignKey(a => a.ClaimId);
-        }
+    // Assignment → Adjuster
+    modelBuilder.Entity<Assignment>()
+        .HasOne(a => a.Adjuster)
+        .WithMany(ad => ad.Assignments)
+        .HasForeignKey(a => a.AdjusterId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+    // Assignment → Claim
+    modelBuilder.Entity<Assignment>()
+        .HasOne(a => a.Claim)
+        .WithMany(c => c.Assignments)
+        .HasForeignKey(a => a.ClaimId)
+        .OnDelete(DeleteBehavior.Restrict);
+}
+
     }
 }

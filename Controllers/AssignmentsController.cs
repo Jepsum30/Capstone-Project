@@ -22,23 +22,30 @@ namespace AdjusterOptimizerAPI.Controllers
 
         // ------------------------------------------------------------
         // GET: api/Assignments
-        // Returns all assignments in the system.
+        // Returns all assignments with navigation properties.
         // ------------------------------------------------------------
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var assignments = await _context.Assignments.ToListAsync();
+            var assignments = await _context.Assignments
+                .Include(a => a.Adjuster)
+                .Include(a => a.Claim)
+                .ToListAsync();
+
             return Ok(assignments);
         }
 
         // ------------------------------------------------------------
         // GET: api/Assignments/{id}
-        // Returns a single assignment by ID.
+        // Returns a single assignment by ID with navigation properties.
         // ------------------------------------------------------------
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var assignment = await _context.Assignments.FindAsync(id);
+            var assignment = await _context.Assignments
+                .Include(a => a.Adjuster)
+                .Include(a => a.Claim)
+                .FirstOrDefaultAsync(a => a.AssignmentId == id);
 
             if (assignment == null)
                 return NotFound("Assignment not found.");
