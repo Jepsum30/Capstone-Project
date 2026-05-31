@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Register - Adjuster Workload Optimizer</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        body { background-color: #f8f9fa; }
+        .card { max-width: 500px; margin: 40px auto; border-radius: 12px; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+
+<body>
+
+<!-- GLOBAL NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="dashboard.html">Adjuster Optimizer</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="claims.html">Claims</a></li>
+                <li class="nav-item"><a class="nav-link" href="assignments.html">Assignments</a></li>
+                <li class="nav-item"><a class="nav-link" href="adjusters.html">Adjusters</a></li>
+                <li class="nav-item"><a class="nav-link" href="performance.html">Performance</a></li>
+                <li class="nav-item"><a class="nav-link" href="search.html">Search</a></li>
+
+                <li class="nav-item"><a class="nav-link active" href="register.html">Register</a></li>
+                <li class="nav-item"><a class="nav-link" href="change-password.html">Change Password</a></li>
+                <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="card shadow p-4">
+
+    <h3 class="text-center mb-3">Create an Account</h3>
+
+    <p class="text-muted text-center">
+        Password must include uppercase, lowercase, number, and symbol.
+    </p>
+
+    <div id="message"></div>
+
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input id="username" class="form-control" placeholder="Enter username" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input id="email" type="email" class="form-control" placeholder="Enter email" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input id="password" type="password" class="form-control" placeholder="Enter password" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Role</label>
+        <select id="role" class="form-select">
+            <option value="Adjuster">Adjuster</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Admin">Admin</option>
+        </select>
+    </div>
+
+    <button class="btn btn-primary w-100" onclick="registerUser()">Register</button>
+</div>
+
+<script>
+    const API_BASE = "http://localhost:5196";
+
+    async function registerUser() {
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const role = document.getElementById("role").value;
+
+        const messageDiv = document.getElementById("message");
+
+        if (!username || !email || !password) {
+            messageDiv.innerHTML = "<p class='error'>All fields are required.</p>";
+            return;
+        }
+
+        const body = {
+            username,
+            email,
+            role,
+            passwordHash: password
+        };
+
+        try {
+            const response = await fetch(`${API_BASE}/api/Users/register`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                messageDiv.innerHTML = `<p class='error'>${result}</p>`;
+                return;
+            }
+
+            messageDiv.innerHTML =
+                `<p class='text-success fw-bold'>Account created successfully!</p>`;
+
+        } catch (error) {
+            messageDiv.innerHTML = "<p class='error'>Unable to connect to server.</p>";
+        }
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

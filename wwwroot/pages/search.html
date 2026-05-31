@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Claim Search - Adjuster Workload Optimizer</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { margin-top: 40px; }
+        .error { color: red; font-weight: bold; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 6px; }
+    </style>
+</head>
+
+<body>
+
+<!-- GLOBAL NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="dashboard.html">Adjuster Optimizer</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="claims.html">Claims</a></li>
+                <li class="nav-item"><a class="nav-link" href="assignments.html">Assignments</a></li>
+                <li class="nav-item"><a class="nav-link" href="adjusters.html">Adjusters</a></li>
+                <li class="nav-item"><a class="nav-link" href="performance.html">Performance</a></li>
+                <li class="nav-item"><a class="nav-link active" href="search.html">Search</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+                <li class="nav-item"><a class="nav-link" href="change-password.html">Change Password</a></li>
+                <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="container">
+
+    <h3>Claim Search</h3>
+    <p class="text-muted">
+        Enter any keyword. Wildcards are supported automatically.
+    </p>
+
+    <div class="input-group mb-3">
+        <input id="searchBox" class="form-control" placeholder="Search claims..." />
+        <button class="btn btn-primary" onclick="runSearch()">Search</button>
+    </div>
+
+    <div id="results"></div>
+
+</div>
+
+<script>
+    const API_BASE = "http://localhost:5196";
+
+    async function runSearch() {
+        const query = document.getElementById("searchBox").value.trim();
+        const resultsDiv = document.getElementById("results");
+
+        if (!query) {
+            resultsDiv.innerHTML = "<p class='error'>Please enter a search term.</p>";
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/api/Claims/search?query=${encodeURIComponent(query)}`);
+
+            if (!response.ok) {
+                resultsDiv.innerHTML = "<p class='error'>Search failed. Please try again.</p>";
+                return;
+            }
+
+            const data = await response.json();
+
+            resultsDiv.innerHTML =
+                `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+
+        } catch (error) {
+            resultsDiv.innerHTML =
+                "<p class='error'>Unable to connect to server.</p>";
+        }
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
